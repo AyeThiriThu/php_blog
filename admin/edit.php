@@ -3,6 +3,9 @@ session_start();
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
   }
+    if ($_SESSION['role']!=1) {
+    header('Location : login.php');
+  }
 	require '../config/config.php';
 	
 	if($_POST){	
@@ -21,16 +24,17 @@ session_start();
 		 		$stmt1=$pdo->prepare("UPDATE posts SET title='$title', content='$content', image='$image' WHERE id='$id';");
 		 		$result1=$stmt1->execute();
 		 		if($result1){
-					echo "<script>alert('Updated successfully!'); window.location.href='index.php';</script>";
-		 		}		
+		 			
+      		header('Location: index.php?pageno='.$_GET['pageno']);
+    		}	
 			}
 		 	
 		}else{
 			$stmt1=$pdo->prepare("UPDATE posts SET title='$title', content='$content' WHERE id='$id';");
 			$result1=$stmt1->execute();
 			if($result1){
-				echo "<script>alert('Updated successfully!'); window.location.href='index.php';</script>";
-			}
+      	header('Location: index.php?pageno='.$_GET['pageno']);
+    	}
 		}
 		
 	}
@@ -42,7 +46,7 @@ session_start();
 	// exit();
 ?>
 
-<?php include('header.html'); ?>
+<?php include('header.php'); ?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -68,7 +72,7 @@ session_start();
                 </div>
                 <div class="form-group">
                   <input type="submit" class="btn btn-success" name="submit" value="SUBMIT">
-                  <a href="index.php" class="btn btn-primary" style="float:right;">BACK</a>
+                  <a href="index.php?pageno=<?php echo $_GET['pageno']; ?>" class="btn btn-primary" style="float:right;">BACK</a>
                 </div>
                 </form>
               </div>

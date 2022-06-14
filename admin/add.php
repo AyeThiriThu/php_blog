@@ -3,6 +3,9 @@
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
   }
+    if ($_SESSION['role']!=1) {
+    header('Location : login.php');
+  }
   require '../config/config.php';
    if ($_POST) {
     //print_r($_FILES);
@@ -30,7 +33,7 @@
 
     } 
 ?>
- <?php include('header.html'); ?>
+ <?php include('header.php'); ?>
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">

@@ -3,5 +3,5 @@
  $stmt=$pdo->prepare('DELETE FROM posts WHERE id='.$_GET['id']);
  $stmt->execute();
  
- header("Location:index.php");
+header('Location: index.php?pageno='.$_GET['pageno']);
  ?>

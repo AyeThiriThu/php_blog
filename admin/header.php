@@ -35,8 +35,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
+        <?php 
+        $link=$_SERVER['PHP_SELF'];
+        $link_array=explode('/',$link);
+        $page=end($link_array);
+         ?>
         <div class="navbar-search-block">
-          <form class="form-inline" method="post" action="index.php">
+          <form class="form-inline" method="post" action="<?php echo $page == 'index.php' ? 'index.php' : 'users.php'; ?>">
             <div class="input-group input-group-sm">
               <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
@@ -78,18 +83,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline" >
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar" >
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -100,6 +93,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Blogs
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="users.php" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Users
               </p>
             </a>
           </li>

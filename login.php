@@ -1,12 +1,8 @@
 <?php  
 session_start();
-require '../config/config.php';
+require 'config/config.php';
 
-// if(!empty($_SESSION['role'])){
-//   if($_SESSION['role']!=1){
-//     echo "<script>alert('You don't have authentication to access the admin panel!!);</script>";
-//   }
-// }
+
 if(!empty($_POST)){
 	$email=$_POST['email'];
 	$pass=$_POST['password'];
@@ -20,9 +16,9 @@ if(!empty($_POST)){
 		if($result['password']==$pass){
 			$_SESSION['user_id']=$result['id'];
 			$_SESSION['user_name']=$result['name'];
-      $_SESSION['role']=1;
+      $_SESSION['role']=0;
 			$_SESSION['logged_in']=time();
-			header('Location: index.php');
+			header('Location:index.php');
 		}else{
 			echo "<script>alert('Password Incorrect!');</script>";
 		}
@@ -43,16 +39,16 @@ if(!empty($_POST)){
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Blog</b>Admin</a>
+    <a href="../../index2.html"><b>Blog</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -77,15 +73,14 @@ if(!empty($_POST)){
           </div>
         </div>
         <div class="row">
-          <div class="col-4">
+          <div class="container">
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <a href="register.php" class="text-center btn btn-default btn-block">Register</a>
           </div>
           <!-- /.col -->
         </div>
       </form>
-     <!--  <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p> -->
+     
     </div>
     <!-- /.login-card-body -->
   </div>
@@ -93,10 +88,10 @@ if(!empty($_POST)){
 <!-- /.login-box -->
 
 <!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
