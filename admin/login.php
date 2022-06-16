@@ -2,11 +2,6 @@
 session_start();
 require '../config/config.php';
 
-// if(!empty($_SESSION['role'])){
-//   if($_SESSION['role']!=1){
-//     echo "<script>alert('You don't have authentication to access the admin panel!!);</script>";
-//   }
-// }
 if(!empty($_POST)){
 	$email=$_POST['email'];
 	$pass=$_POST['password'];

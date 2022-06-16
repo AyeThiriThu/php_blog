@@ -8,7 +8,17 @@ session_start();
   }
 	require '../config/config.php';
 	if ($_POST) {
-   		$id=$_POST['id'];
+		if(empty($_POST['name']) || empty($_POST['email'])){
+      if(empty($_POST['name'])){
+        $nameError='Name cannot be null';
+      }
+      if(empty($_POST['email'])){
+        $emailError='Email cannot be null';
+      }
+    }elseif (!empty($_POST['password']) && strlen($_POST['password'])<4) {
+        $passwordError="Password should be at least 4 characters!";	
+    }else{
+			$id=$_POST['id'];
       $name=$_POST['name'];
       $email=$_POST['email'];
       $password=$_POST['password'];
@@ -23,15 +33,22 @@ session_start();
       $stmtforemail->execute();
       $sameemail=$stmtforemail->fetch(PDO::FETCH_ASSOC);
       if(empty($sameemail)){
-	      $stmt=$pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id=".$_GET['id']);
+      	if($password!=null){
+      		$stmt=$pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password' ,role='$role' WHERE id=".$_GET['id']);
+      	}else{
+      		$stmt=$pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id=".$_GET['id']);
+      	}
+	      
 	      $result1=$stmt->execute();
 	      if($result1){
 	        header('Location: users.php?pageno='.$_GET['pageno']);
 	      }
     	}else{
-        echo "<script>alert('User already exits.Please use another email!');window.location.href='users.php';</script>";
+        echo "<script>alert('User already exits.Please use another email!');</script>";
       }
-    } 
+    }
+   		
+   } 
 	
 	$stmt=$pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
 	$stmt->execute();
@@ -53,15 +70,19 @@ session_start();
                 <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>">
                 <div class="form-group">
                   <label for="name">Name</label><br>
-                  <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>" required>
+                  <p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
+                  <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>" >
                 </div>
                 <div class="form-group">
                  <label for="email">Email</label><br>
-                 <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" required>
+                 <p style="color:red"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
+                 <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" >
                 </div>
                 <div class="form-group">
                  <label for="password">Password</label><br>
-                 <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" required>
+                 <p style="color:red"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
+                 <span style="font-size: 10px;">The user already has a password</span>
+                 <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" >
                 </div>
                 <div class="form-group">
                  <label for="admin">Admin</label><br>

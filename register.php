@@ -3,28 +3,44 @@ session_start();
 require 'config/config.php';
 
 if(!empty($_POST)){
-  $name=$_POST['name'];
-  $email=$_POST['email'];
-  $pass=$_POST['password'];	
-  $stmt=$pdo->prepare("SELECT * from users WHERE email=:email");
-  $stmt->bindValue(":email",$email);
-  $stmt->execute();
-  $result=$stmt->fetch(PDO::FETCH_ASSOC);
-  //print_r($result);
-  if($result){
-    echo "<script>alert('This email already exits.Use another email to register!');</script>";
-  }else{
-    $stmt=$pdo->prepare("INSERT INTO users(name,email,password,role) VALUES(:name,:email,:password,0)");
-    $stmt->bindValue(':name',$name);
-    $stmt->bindValue(':email',$email);
-    $stmt->bindValue(':password',$pass);
-    $result=$stmt->execute();
-    if($result){
-      $_SESSION['role']=0;
-      echo "<script>alert('Successfully Registered! You can now login!');window.location.href='login.php';</script>";
+  if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4){
+    if(empty($_POST['name'])){
+      $nameError='Name cannot be null';
     }
+    if(empty($_POST['email'])){
+      $emailError='Email cannot be null';
+    }
+    if(empty($_POST['password'])){
+      $passwordError='Password cannot be null';
+    }
+    if(strlen($_POST['password'])<4){
+      $passwordError="Password should be at least 4 characters!";
+    }
+  }else{
+    $name=$_POST['name'];
+    $email=$_POST['email'];
+    $pass=$_POST['password']; 
+    $stmt=$pdo->prepare("SELECT * from users WHERE email=:email");
+    $stmt->bindValue(":email",$email);
+    $stmt->execute();
+    $result=$stmt->fetch(PDO::FETCH_ASSOC);
+    //print_r($result);
+    if($result){
+      echo "<script>alert('This email already exits.Use another email to register!');</script>";
+    }else{
+      $stmt=$pdo->prepare("INSERT INTO users(name,email,password,role) VALUES(:name,:email,:password,0)");
+      $stmt->bindValue(':name',$name);
+      $stmt->bindValue(':email',$email);
+      $stmt->bindValue(':password',$pass);
+      $result=$stmt->execute();
+      if($result){
+        $_SESSION['role']=0;
+        echo "<script>alert('Successfully Registered! You can now login!');window.location.href='login.php';</script>";
+      }
 
+    }    
   }
+  
 }
 ?>
 <!DOCTYPE html>
@@ -55,29 +71,33 @@ if(!empty($_POST)){
 
       <form action="register.php" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Name" name="name" required>
+          <input type="text" class="form-control" placeholder="Name" name="name">
+          
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
+        <p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email" required>
+          <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-        </div>
+        </div>  
+        <p style="color:red"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="password" required> 
+          <input type="password" class="form-control" placeholder="Password" name="password"> 
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
+        <p style="color:red"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
         <div class="row">
           <div class="container">
             <button type="submit" class="btn btn-primary btn-block">Register</button>

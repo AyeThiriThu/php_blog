@@ -24,15 +24,21 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
   
 
   if($_POST){
-    $comment=$_POST['comment'];
-    $stmt=$pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES(:content,:author_id,:post_id);");
-    $stmt->bindValue(':content',$comment);
-    $stmt->bindValue(':author_id',$_SESSION['user_id']);
-    $stmt->bindValue(':post_id',$_GET['id']);
-    $result=$stmt->execute();
+    if(empty($_POST['comment'])){
+      if(empty($_POST['comment'])){
+        $cmtError='Comment cannot be null';
+      }
+    }else{
+      $comment=$_POST['comment'];
+      $stmt=$pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES(:content,:author_id,:post_id);");
+      $stmt->bindValue(':content',$comment);
+      $stmt->bindValue(':author_id',$_SESSION['user_id']);
+      $stmt->bindValue(':post_id',$_GET['id']);
+      $result=$stmt->execute();
 
-    if($result){
-      header('Location: blogdetail.php?id='.$_GET['id']);
+      if($result){
+        header('Location: blogdetail.php?id='.$_GET['id']);
+      }
     }
   }
 ?>
@@ -104,8 +110,10 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
               <div class="card-footer">
                 <form action="#" method="post">
                   <div class="img-push">
-                    <input name="comment" type="text" class="form-control form-control-sm" placeholder="Press enter to post comment">    
+                    <input name="comment" type="text" class="form-control form-control-sm" placeholder="Press enter to post comment"> 
+                    <p style="color:red"><?php echo empty($cmtError) ? '' : '*'.$cmtError; ?>   
                   </div>
+                  </p>
                 </form>
               </div>
               <!-- /.card-footer -->

@@ -7,36 +7,48 @@
     header('Location : login.php');
   }
   require '../config/config.php';
-   if ($_POST) {
-      // print_r($_POST);
-      // exit();
-      $name=$_POST['name'];
-      $email=$_POST['email'];
-      $password=$_POST['password']; 
-      if(empty($_POST['admin'])){
-          $role='0';
+    if ($_POST) {
+      if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4){
+        if(empty($_POST['name'])){
+          $nameError='Name cannot be null';
+        }
+        if(empty($_POST['email'])){
+          $emailError='Email cannot be null';
+        }
+        if(empty($_POST['password'])){
+          $passwordError='Password cannot be null';
+        }
+        if(strlen($_POST['password'])<4){
+          $passwordError="Password should be at least 4 characters!";
+        }
       }else{
-          $role='1';
-      }  
-        
-      $stmtforemail=$pdo->prepare('SELECT * FROM users WHERE email=:email');
-      $stmtforemail->bindValue(':email',$email);
-      $stmtforemail->execute();
-      $sameemail=$stmtforemail->fetch(PDO::FETCH_ASSOC);
-      if(empty($sameemail)){
-        $stmt=$pdo->prepare('INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role);');
-        $stmt->bindValue(':name',$name);
-        $stmt->bindValue(':email',$email);
-        $stmt->bindValue(':password',$password);
-        $stmt->bindValue(':role',$role);
-        $result=$stmt->execute();
-        if($result){
-          echo "<script>alert('Successfully Added!'); </script>";
+        $name=$_POST['name'];
+        $email=$_POST['email'];
+        $password=$_POST['password']; 
+        if(empty($_POST['admin'])){
+            $role='0';
+        }else{
+            $role='1';
         }  
-      }else{
-        echo "<script>alert('User already exits.Please use another email!');window.location.href='users.php';</script>";
-      }
-      
+          
+        $stmtforemail=$pdo->prepare('SELECT * FROM users WHERE email=:email');
+        $stmtforemail->bindValue(':email',$email);
+        $stmtforemail->execute();
+        $sameemail=$stmtforemail->fetch(PDO::FETCH_ASSOC);
+        if(empty($sameemail)){
+          $stmt=$pdo->prepare('INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role);');
+          $stmt->bindValue(':name',$name);
+          $stmt->bindValue(':email',$email);
+          $stmt->bindValue(':password',$password);
+          $stmt->bindValue(':role',$role);
+          $result=$stmt->execute();
+          if($result){
+            echo "<script>alert('Successfully Added!');window.location.href='users.php'; </script>";
+          }  
+        }else{
+          echo "<script>alert('User already exits.Please use another email!');window.location.href='users.php';</script>";
+        }
+      } 
     } 
 ?>
  <?php include('header.php'); ?>
@@ -50,15 +62,18 @@
                 <form action="addusers.php" method="post">
                 <div class="form-group">
                   <label for="name">Name</label><br>
-                  <input type="text" class="form-control" name="name" required>
+                  <p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
+                  <input type="text" class="form-control" name="name">
                 </div>
                 <div class="form-group">
                  <label for="email">Email</label><br>
-                 <input type="email" class="form-control" name="email" required>
+                 <p style="color:red"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
+                 <input type="email" class="form-control" name="email">
                 </div>
                 <div class="form-group">
                  <label for="password">Password</label><br>
-                 <input type="password" class="form-control" name="password" required>
+                 <p style="color:red"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
+                 <input type="password" class="form-control" name="password">
                 </div>
                 <div class="form-group">
                  <label for="admin">Admin</label><br>
