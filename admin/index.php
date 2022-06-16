@@ -1,8 +1,16 @@
 <?php
 session_start();
-  if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in']) && $_SESSION['role']!=1){
+ // print "<pre>";
+ // print_r($_SESSION);
+ //  exit();
+
+  if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
    header('Location: login.php');
-  } 
+  }
+  // if($_SESSION['role']!=1){
+  //   header('Location :login.php');
+  // }
+ 
   if(!empty($_POST['search'])){
     setcookie('search',$_POST['search'],time()+(86400*30),"/");
   }else{                            //delete cookie, otherwise other page will get cookie 

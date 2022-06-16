@@ -21,7 +21,7 @@ session_start();
 			$id=$_POST['id'];
       $name=$_POST['name'];
       $email=$_POST['email'];
-      $password=$_POST['password'];
+      $password=password_hash($_POST['password'],PASSWORD_DEFAULT);
       if(empty($_POST['admin'])){
           $role='0';
       }else{
@@ -82,7 +82,7 @@ session_start();
                  <label for="password">Password</label><br>
                  <p style="color:red"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
                  <span style="font-size: 10px;">The user already has a password</span>
-                 <input type="password" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" >
+                 <input type="password" class="form-control" name="password">
                 </div>
                 <div class="form-group">
                  <label for="admin">Admin</label><br>

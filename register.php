@@ -19,7 +19,7 @@ if(!empty($_POST)){
   }else{
     $name=$_POST['name'];
     $email=$_POST['email'];
-    $pass=$_POST['password']; 
+    $pass=password_hash($_POST['password'], PASSWORD_DEFAULT);
     $stmt=$pdo->prepare("SELECT * from users WHERE email=:email");
     $stmt->bindValue(":email",$email);
     $stmt->execute();

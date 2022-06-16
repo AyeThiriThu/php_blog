@@ -5,14 +5,14 @@ require '../config/config.php';
 if(!empty($_POST)){
 	$email=$_POST['email'];
 	$pass=$_POST['password'];
-	$stmt=$pdo->prepare("SELECT * FROM users where email=:emailenter");
+	$stmt=$pdo->prepare("SELECT * FROM users where email=:emailenter AND role=1");
 	$stmt->bindValue(':emailenter',$email);
 	$stmt->execute();
 	$result=$stmt->fetch(PDO::FETCH_ASSOC);
 	// print_r($result);
 	// exit();
 	if($result){
-		if($result['password']==$pass){
+		if(password_verify($pass, $result['password'])){
 			$_SESSION['user_id']=$result['id'];
 			$_SESSION['user_name']=$result['name'];
       $_SESSION['role']=1;
