@@ -1,5 +1,15 @@
 <?php 
 // session_start();
+// for csrf attack
+if($_SERVER['REQUEST_METHOD']=='POST'){
+	if(!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
+		echo "Invalid CSRF token!!";
+		die();
+	}else{
+		unset($_SESSION['csrf_token']);
+	}
+}
+
 if(empty($_SESSION['csrf_token'])){
 	if(function_exists('random_bytes')){
 		$_SESSION['csrf_token']=bin2hex(random_bytes(32));
@@ -10,15 +20,7 @@ if(empty($_SESSION['csrf_token'])){
 	}
 }
 
-// for csrf attack
-if($_SERVER['REQUEST_METHOD']=='POST'){
-	if(!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
-		echo "Invalid CSRF token!!";
-		die();
-	}else{
-		unset($_SESSION['csrf_token']);
-	}
-}
+
 
 // Escape html for output for xss attack
 

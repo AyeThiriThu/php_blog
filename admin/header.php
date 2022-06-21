@@ -42,6 +42,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
          ?>
         <div class="navbar-search-block">
           <form class="form-inline" method="post" action="<?php echo $page == 'index.php' ? 'index.php' : 'users.php'; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
             <div class="input-group input-group-sm">
               <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
