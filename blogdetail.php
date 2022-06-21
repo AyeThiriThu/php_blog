@@ -4,6 +4,8 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
    header('Location: login.php');
   }
   require 'config/config.php';
+  require 'config/common.php';
+
   $id=$_GET['id'];
   $stmt=$pdo->prepare('SELECT * FROM posts WHERE id='.$_GET['id']);
   $stmt->execute();
@@ -109,6 +111,7 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
               <!-- /.card-footer -->
               <div class="card-footer">
                 <form action="#" method="post">
+                  <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                   <div class="img-push">
                     <input name="comment" type="text" class="form-control form-control-sm" placeholder="Press enter to post comment"> 
                     <p style="color:red"><?php echo empty($cmtError) ? '' : '*'.$cmtError; ?>   

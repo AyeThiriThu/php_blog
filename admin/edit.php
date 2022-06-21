@@ -7,6 +7,7 @@ session_start();
     header('Location : login.php');
   }
 	require '../config/config.php';
+  require '../config/common.php';
 	
 	if($_POST){	
 		if(empty($_POST['title']) || empty($_POST['content'])){
@@ -61,6 +62,7 @@ session_start();
             <div class="card">
               <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>">
                 <div class="form-group">
                   <label for="title">Title</label><br>

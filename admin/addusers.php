@@ -7,6 +7,8 @@
     header('Location : login.php');
   }
   require '../config/config.php';
+  require '../config/common.php';
+  
     if ($_POST) {
       if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4){
         if(empty($_POST['name'])){
@@ -24,7 +26,7 @@
       }else{
         $name=$_POST['name'];
         $email=$_POST['email'];
-        $password=$_POST['password']; 
+        $password=password_hash($_POST['password'],PASSWORD_DEFAULT);; 
         if(empty($_POST['admin'])){
             $role='0';
         }else{
@@ -60,6 +62,7 @@
             <div class="card">
               <div class="card-body">
                 <form action="addusers.php" method="post">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <div class="form-group">
                   <label for="name">Name</label><br>
                   <p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>

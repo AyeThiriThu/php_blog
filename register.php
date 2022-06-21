@@ -1,6 +1,7 @@
 <?php  
 session_start();
 require 'config/config.php';
+require 'config/common.php';
 
 if(!empty($_POST)){
   if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password'])<4){
@@ -70,6 +71,7 @@ if(!empty($_POST)){
       <p class="login-box-msg">Register New Account</p>
 
       <form action="register.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Name" name="name">
           

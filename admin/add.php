@@ -1,12 +1,14 @@
 <?php
   session_start();
+  require '../config/config.php';
+  require '../config/common.php';
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
   }
     if ($_SESSION['role']!=1) {
     header('Location : login.php');
   }
-  require '../config/config.php';
+
   if ($_POST) {
     if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image']['name'])){
       if(empty($_POST['title'])){
@@ -52,6 +54,7 @@
             <div class="card">
               <div class="card-body">
                 <form action="add.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 <div class="form-group">
                   <label for="title">Title</label><br>
                   <p style="color:red"><?php echo empty($titleError) ? '' : '*'.$titleError; ?></p>
