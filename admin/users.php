@@ -1,5 +1,7 @@
 <?php
 session_start();
+  require '../config/common.php';
+
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
    header('Location: login.php');
   } 
@@ -81,8 +83,8 @@ session_start();
                         ?>
                         <tr>
                           <td><?php echo $i++; ?></td>
-                          <td><?php echo $value['name']; ?></td>
-                          <td><?php echo $value['email']; ?></td>
+                          <td><?php echo escape($value['name']); ?></td>
+                          <td><?php echo escape($value['email']); ?></td>
                           <td><?php if($value['role']==1){echo 'admin';}else{echo 'user';} ?></td>
                           <td>
                           <div class="btn-group">

@@ -67,21 +67,21 @@ session_start();
                 <div class="form-group">
                   <label for="title">Title</label><br>
                   <p style="color:red"><?php echo empty($titleError) ? '' : '*'.$titleError; ?></p>
-                  <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title'] ?>">
+                  <input type="text" class="form-control" name="title" value="<?php echo escape($result[0]['title']); ?>">
                 </div>
                 <div class="form-group">
                  <label for="content">Content</label><br>
                  <p style="color:red"><?php echo empty($contentError) ? '' : '*'.$contentError; ?></p>
-                 <textarea name="content" rows="8" class="form-control"><?php echo $result[0]['content']; ?></textarea>
+                 <textarea name="content" rows="8" class="form-control"><?php echo escape($result[0]['content']); ?></textarea>
                 </div>
                 <div class="form-group">
                   <label for="image">Image</label><br>
-                  <img src="../images/<?php echo $result[0]['image']; ?>" width="150px"; height="100px" ><br><br>
+                  <img src="../images/<?php echo escape($result[0]['image']); ?>" width="150px"; height="100px" ><br><br>
                   <input type="file" name="image" ><br>
                 </div>
                 <div class="form-group">
                   <input type="submit" class="btn btn-success" name="submit" value="SUBMIT">
-                  <a href="index.php?pageno=<?php echo $_GET['pageno']; ?>" class="btn btn-primary" style="float:right;">BACK</a>
+                  <a href="index.php?pageno=<?php echo escape($_GET['pageno']); ?>" class="btn btn-primary" style="float:right;">BACK</a>
                 </div>
                 </form>
               </div>

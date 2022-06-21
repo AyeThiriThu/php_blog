@@ -10,6 +10,7 @@ if(empty($_SESSION['csrf_token'])){
 	}
 }
 
+// for csrf attack
 if($_SERVER['REQUEST_METHOD']=='POST'){
 	if(!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])){
 		echo "Invalid CSRF token!!";
@@ -18,9 +19,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 		unset($_SESSION['csrf_token']);
 	}
 }
-// Escape html for output
 
-// function escape($html){
-// 	return htmlspecialchars($html,ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8");
-// }
+// Escape html for output for xss attack
+
+function escape($html){
+	return htmlspecialchars($html,ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8");
+}
 ?>

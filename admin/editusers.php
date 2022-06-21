@@ -8,7 +8,7 @@ session_start();
   }
 	require '../config/config.php';
   require '../config/common.php';
-	
+
 	if ($_POST) {
 		if(empty($_POST['name']) || empty($_POST['email'])){
       if(empty($_POST['name'])){
@@ -74,12 +74,12 @@ session_start();
                 <div class="form-group">
                   <label for="name">Name</label><br>
                   <p style="color:red"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
-                  <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>" >
+                  <input type="text" class="form-control" name="name" value="<?php echo escape($result[0]['name']); ?>" >
                 </div>
                 <div class="form-group">
                  <label for="email">Email</label><br>
                  <p style="color:red"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
-                 <input type="email" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" >
+                 <input type="email" class="form-control" name="email" value="<?php echo escape($result[0]['email']); ?>" >
                 </div>
                 <div class="form-group">
                  <label for="password">Password</label><br>

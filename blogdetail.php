@@ -72,14 +72,14 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
             <div class="card card-widget">
               <div class="card-header">
                 <div class="card-title" style="text-align: center !important; float: none;">
-                  <h4><?php echo $result[0]['title']; ?></h4>
+                  <h4><?php echo escape($result[0]['title']); ?></h4>
                 </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <img class="img-fluid pad" src="images/<?php echo $result[0]['image']; ?>" alt="Photo" style="width : 100%;"><br><br>
+                <img class="img-fluid pad" src="images/<?php echo escape($result[0]['image']); ?>" alt="Photo" style="width : 100%;"><br><br>
 
-                <p><?php echo $result[0]['content']; ?></p>
+                <p><?php echo escape($result[0]['content']); ?></p>
                 <h3>Comments</h3>
                 <hr>
               </div>
@@ -95,10 +95,10 @@ if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
                       $name=$pdo->prepare('SELECT name FROM users WHERE id='.$value['author_id']);
                       $name->execute();
                       $resultname=$name->fetch();
-                      echo $resultname['name']; ?>
-                      <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
+                      echo escape($resultname['name']); ?>
+                      <span class="text-muted float-right"><?php echo escape($value['created_at']); ?></span>
                     </span><!-- /.username -->
-                    <?php echo $value['content']; ?>
+                    <?php echo escape($value['content']); ?>
                   </div>
                   <!-- /.comment-text -->
                 </div>
